@@ -11,7 +11,7 @@ import Footer from './Components/Footer/Page'
 export default function Home() {
   return (
     
-       <main className="relative  min-h-full">
+       <main className="relative w-full  min-h-full">
       <BackgroundAnimation />
       <div className="relative z-10">
       <HeroSection />

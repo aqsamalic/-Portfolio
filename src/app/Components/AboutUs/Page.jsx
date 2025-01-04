@@ -74,7 +74,7 @@ export default function AboutUs() {
           {/* Image Section */}
           <div className="md:w-1/3 animate-bounce-in">
             <Image
-              src="/aqsa.jpg" // Ensure the image is in the public folder
+              src="/aqsa.webp" // Ensure the image is in the public folder
               alt="CodeBucks"
               width={300}
               height={400}

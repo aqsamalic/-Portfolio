@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { FaGithub, FaLinkedin, FaPinterest, FaDribbble } from 'react-icons/fa';
-import { Link as ScrollLink, animateScroll as scroll } from 'react-scroll';
+import { Link as ScrollLink } from 'react-scroll';
 import { MdDarkMode } from 'react-icons/md';
-
 import Link from 'next/link';
 
 export default function Navbar({ toggleDarkMode }) {
@@ -12,10 +11,9 @@ export default function Navbar({ toggleDarkMode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -29,8 +27,10 @@ export default function Navbar({ toggleDarkMode }) {
   ];
 
   const SocialIcon = ({ Icon, href, color }) => (
-    <Link href={href} className={`text-2xl ${color} transition-transform hover:scale-125`}>
-      <Icon />
+    <Link href={href} target="_blank" rel="noopener noreferrer">
+      <span className={`text-2xl ${color} transition-transform hover:scale-125`}>
+        <Icon />
+      </span>
     </Link>
   );
 
@@ -47,8 +47,8 @@ export default function Navbar({ toggleDarkMode }) {
             <ScrollLink
               key={item.name}
               to={item.id}
-              spy={true}
-              smooth={true}
+              spy
+              smooth
               offset={-70}
               duration={500}
               className="cursor-pointer text-lg hover:underline transition-all duration-300"
@@ -60,10 +60,11 @@ export default function Navbar({ toggleDarkMode }) {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden top-0  text-3xl"
+          className="md:hidden text-3xl"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle Menu"
         >
-          {isMobileMenuOpen ? '✖' : '☰'}
+          {isMobileMenuOpen ? '' : '☰'}
         </button>
 
         {/* Right-Aligned Social Icons */}
@@ -84,13 +85,20 @@ export default function Navbar({ toggleDarkMode }) {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-black text-white py-4 px-6">
+          <button
+            className="text-right text-xl text-white mb-4"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close Menu"
+          >
+            ✖
+          </button>
           <div className="flex flex-col space-y-4">
             {navbar.map((item) => (
               <ScrollLink
                 key={item.name}
                 to={item.id}
-                spy={true}
-                smooth={true}
+                spy
+                smooth
                 offset={-70}
                 duration={500}
                 className="cursor-pointer hover:underline text-lg transition-all duration-300"
@@ -99,7 +107,7 @@ export default function Navbar({ toggleDarkMode }) {
                 {item.name}
               </ScrollLink>
             ))}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mt-4">
               <SocialIcon Icon={FaGithub} href="https://github.com" color="text-gray-800" />
               <SocialIcon Icon={FaLinkedin} href="https://linkedin.com" color="text-blue-700" />
               <SocialIcon Icon={FaPinterest} href="https://pinterest.com" color="text-red-600" />
@@ -117,4 +125,5 @@ export default function Navbar({ toggleDarkMode }) {
     </nav>
   );
 }
+
 

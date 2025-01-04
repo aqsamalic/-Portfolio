@@ -23,13 +23,12 @@ export default function OrbitalSkills() {
   useEffect(() => {
     setIsLoaded(true);
 
-    const handleResize = () => {
-      // Adjust radius based on screen size
+    const handleResize = debounce(() => {
       const screenWidth = window.innerWidth;
-      if (screenWidth < 640) setRadius(80); // Mobile screens
-      else if (screenWidth < 1024) setRadius(150); // Tablet screens
-      else setRadius(200); // Desktop screens
-    };
+      if (screenWidth < 640) setRadius(80); // Mobile
+      else if (screenWidth < 1024) setRadius(150); // Tablet
+      else setRadius(200); // Desktop
+    }, 100);
 
     handleResize(); // Set initial radius
     window.addEventListener('resize', handleResize);
@@ -38,9 +37,9 @@ export default function OrbitalSkills() {
   }, []);
 
   const positions = useMemo(() => {
-    const angleStep = (2 * Math.PI) / skills.length; // Equal spacing for all skills
+    const angleStep = (2 * Math.PI) / skills.length; // Equal spacing
     return skills.map((skill, index) => {
-      const angle = index * angleStep; // Distribute evenly around the circle
+      const angle = index * angleStep; // Distribute evenly
       return {
         ...skill,
         x: radius * Math.cos(angle),
@@ -57,7 +56,7 @@ export default function OrbitalSkills() {
           className="absolute text-white text-2xl md:text-4xl font-bold"
           initial={{ opacity: 0 }}
           animate={isLoaded ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.8 }}
         >
           Skills
         </motion.div>
@@ -70,8 +69,8 @@ export default function OrbitalSkills() {
             height: `${radius * 2}px`,
           }}
           initial={{ scale: 0, opacity: 0 }}
-          animate={isLoaded ? { scale: 1, opacity: 0.5 } : { scale: 0, opacity: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          animate={isLoaded ? { scale: 1, opacity: 0.6 } : { scale: 0, opacity: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
         />
 
         {/* Skills */}
@@ -90,7 +89,7 @@ export default function OrbitalSkills() {
                 ? { x: skill.x, y: skill.y, scale: 1 }
                 : { x: 0, y: 0, scale: 0 }
             }
-            transition={{ duration: 1, delay: index * 0.1, ease: 'easeOut' }}
+            transition={{ duration: 0.8, delay: index * 0.05, ease: 'easeOut' }}
           >
             <div
               className="whitespace-nowrap rounded-full bg-lime-400 px-2 md:px-4 py-1 md:py-2 text-xs md:text-sm text-black hover:bg-gray-800 transition-colors"
@@ -104,3 +103,13 @@ export default function OrbitalSkills() {
     </div>
   );
 }
+
+// Debounce function to reduce resize handler calls
+function debounce(func, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func(...args), delay);
+  };
+}
+
